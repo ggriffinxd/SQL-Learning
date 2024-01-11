@@ -1,0 +1,220 @@
+1)
+--Criação database
+CREATE DATABASE EXE1
+
+--Utilizar database
+USE EXE1
+
+-- Criação da tabela Funcionarios
+CREATE TABLE Funcionarios (
+    id_funcionario INT PRIMARY KEY,
+    nome VARCHAR(20),
+    sobrenome VARCHAR(45),
+    matricula VARCHAR(5),
+    permissao INT,
+    id_dpto INT
+)
+
+-- Criação da tabela Departamentos
+CREATE TABLE Departamentos (
+    id_dpto INT PRIMARY KEY,
+    nome_dpto VARCHAR(45),
+    sigla_dpto VARCHAR(5),
+    id_dpto_chefe INT,
+    FOREIGN KEY (id_dpto_chefe) REFERENCES Departamentos(id_dpto)
+)
+
+-- Criação da tabela Chefes
+CREATE TABLE Chefes (
+    id_chefe INT PRIMARY KEY,
+    id_funcionario INT,
+    FOREIGN KEY (id_funcionario) REFERENCES Funcionarios(id_funcionario),
+    id_dpto INT,
+    FOREIGN KEY (id_dpto) REFERENCES Departamentos(id_dpto)
+)
+
+2)
+--Criação database
+CREATE DATABASE EXE2
+
+--Utilizar database
+USE EXE2
+
+-- Criação da tabela Aluno
+CREATE TABLE Aluno (
+    idAluno INT PRIMARY KEY,
+    Nome VARCHAR(45),
+    Email VARCHAR(45),
+    CPF INT,
+    Endereco VARCHAR(45)
+)
+
+-- Criação da tabela Curso
+CREATE TABLE Curso (
+    idCurso INT PRIMARY KEY,
+    Numero INT,
+    Compremento VARCHAR(45),
+    Nome VARCHAR(45),
+    Cidade VARCHAR(45),
+    Professor_idProfessor INT,
+    Estado VARCHAR(45)
+)
+
+-- Criação da tabela Professor
+CREATE TABLE Professor (
+    idProfessor INT PRIMARY KEY,
+    Nome VARCHAR(45),
+    Email VARCHAR(45),
+    CPF INT,
+    Endereco VARCHAR(45),
+    Numero INT,
+    Complemento VARCHAR(45),
+    Cidade VARCHAR(45),
+    Estado VARCHAR(45)
+)
+
+-- Criação da tabela CursoAluno (relacionando Curso e Aluno)
+CREATE TABLE CursoAluno (
+    idCurso INT,
+    idAluno INT,
+    Aluno_idAluno INT,
+    FOREIGN KEY (idCurso) REFERENCES Curso(idCurso),
+    FOREIGN KEY (idAluno) REFERENCES Aluno(idAluno)
+)
+
+3)
+--Criação database
+CREATE DATABASE EXE3
+
+--Utilizar database
+USE EXE3
+
+-- Criação da tabela Sessao
+CREATE TABLE Sessao (
+    ID VARCHAR(150),
+    Nome VARCHAR(150),
+    Descricao VARCHAR(250),
+    Tipo VARCHAR(1),
+    Opcao1 VARCHAR(3),
+    Data_Inicial VARCHAR(10),
+    Data_Final VARCHAR(10),
+    Controle VARCHAR(1),
+    PRIMARY KEY (ID)
+)
+
+-- Criação da tabela Voto
+CREATE TABLE Voto (
+    ID_Sessao VARCHAR(150),
+    Opcao2 VARCHAR(3),
+    Participacao VARCHAR(1),
+    ID_Politico VARCHAR(150),
+    Resposta INT,
+    Estado VARCHAR(1),
+    FOREIGN KEY (ID_Sessao) REFERENCES Sessao(ID),
+    PRIMARY KEY (ID_Sessao, ID_Politico)
+)
+
+-- Criação da tabela Politico
+CREATE TABLE Politico (
+    ID VARCHAR(150) PRIMARY KEY,
+    Usuario VARCHAR(200) UNIQUE,
+    Login VARCHAR(100) UNIQUE,
+    Senha VARCHAR(50),
+    Qtd_Max INT,
+    Qtd_VotosPos INT,
+    Qtd_VotosNeg INT,
+    Estado VARCHAR(1)
+)
+
+-- Criação de índices adicionais
+CREATE INDEX ID_Politico_idx ON Voto (ID_Politico)
+CREATE UNIQUE INDEX ID_UNIQUE ON Politico (ID)
+CREATE UNIQUE INDEX ID_Sessao_idx ON Voto (ID_Sessao)
+
+4)
+--Criação database
+CREATE DATABASE EXE4
+
+--Utilizar database
+USE EXE4
+
+-- Criação da tabela FUNCIONARIOS
+CREATE TABLE FUNCIONARIOS (
+    MATRICULA INTEGER PRIMARY KEY,
+    NOME VARCHAR(50),
+    DATA_NASCIMENTO DATE
+)
+
+-- Criação da tabela CONTEUDOS
+CREATE TABLE CONTEUDOS (
+    CODIGO INTEGER PRIMARY KEY,
+    DESCRICAO VARCHAR(50)
+)
+
+-- Criação da tabela MALOTES
+CREATE TABLE MALOTES (
+    ID INTEGER PRIMARY KEY,
+    FUNCIONARIOS_MATRICULA INTEGER,
+    DATA_ENVIO DATE,
+    DATA_CONFERENCIA DATE,
+    SITUACAO_MALOTE VARCHAR(1),
+    CONTEUDOS_CODIGO INTEGER,
+    FOREIGN KEY (FUNCIONARIOS_MATRICULA) REFERENCES FUNCIONARIOS(MATRICULA),
+    FOREIGN KEY (CONTEUDOS_CODIGO) REFERENCES CONTEUDOS(CODIGO)
+)
+
+5)
+--Criação database
+CREATE DATABASE EXE5
+
+--Utilizar database
+USE EXE5
+
+-- Criação da tabela node
+CREATE TABLE node (
+    idNODE INT(11) PRIMARY KEY,
+    NOME VARCHAR(45),
+    INFORMACOES VARCHAR(45)
+)
+
+-- Criação da tabela datasource
+CREATE TABLE datasource (
+    idESTACAO_METEO INT(11) PRIMARY KEY,
+    NOME_ESTACAO VARCHAR(45),
+    FABRICANTE VARCHAR(45),
+    MODELO VARCHAR(45),
+    NODE_idNODE INT(11),
+    FOREIGN KEY (NODE_idNODE) REFERENCES node(idNODE)
+)
+
+-- Criação da tabela tag
+CREATE TABLE tag (
+    idTAG INT(11) PRIMARY KEY,
+    NOME_TAG VARCHAR(45),
+    DESCRICAO VARCHAR(255),
+    ESTACAO_METEO_idESTACAO_METEO INT(11),
+    Desvio VARCHAR(45),
+    TEMPO_MAX INT(11),
+    FOREIGN KEY (ESTACAO_METEO_idESTACAO_METEO) REFERENCES datasource(idESTACAO_METEO)
+)
+
+-- Criação da tabela snapshot
+CREATE TABLE snapshot (
+    idSNAP INT(11) PRIMARY KEY,
+    VALOR VARCHAR(45),
+    SNAPSHOT TIMESTAMP,
+    TAG_idTAG INT(11),
+    NOME_TAG VARCHAR(45),
+    FOREIGN KEY (TAG_idTAG, NOME_TAG) REFERENCES tag(idTAG, NOME_TAG)
+)
+
+-- Criação da tabela valores
+CREATE TABLE valores (
+    idvalores INT(11) PRIMARY KEY,
+    VALOR VARCHAR(45),
+    DATAHORA TIMESTAMP,
+    TAG_idTAG INT(11),
+    TAG_ESTACAO_METEO_idESTACAO_METEO INT(11),
+    FOREIGN KEY (TAG_idTAG) REFERENCES tag(idTAG),
+    FOREIGN KEY (TAG_ESTACAO_METEO_idESTACAO_METEO) REFERENCES datasource(idESTACAO_METEO)
+)

@@ -1,0 +1,34 @@
+1)
+ALTER TABLE usuário
+ADD cpf VARCHAR(11)
+
+
+ALTER TABLE usuário
+ADD rrg VARCHAR(15)
+
+ALTER TABLE usuário
+ADD telefone VARCHAR(15)
+
+2)
+ALTER TABLE usr_ai
+RENAME TO usuário_area_interesse
+
+
+3)
+ALTER TABLE usuário
+RENAME COLUMN nome TO nome_usuario
+
+4)
+ALTER TABLE contato
+ADD COLUMN data_contato DATETIME
+
+5)
+ALTER TABLE usuário
+ADD COLUMN data_hr DATETIME AFTER email
+
+6)
+ALTER TABLE arquivo
+MODIFY COLUMN data_criação DATETIME
+
+7)
+ALTER TABLE usr_ai RENAME TO usuario_area_interesse
